@@ -1,0 +1,43 @@
+{
+  "name": "teste-database",
+  "version": "1.0.0",
+  "description": "database for tests",
+  "main": "index.js",
+  "author": "aalleexxbecker",
+  "license": "MIT",
+  "dependencies": {
+    "@types/jest": "^26.0.24",
+    "axios": "^0.21.1",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "http-errors": "^1.8.0",
+    "pg": "^8.7.1",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.6.5",
+    "sequelize-cli": "^6.2.0"
+  },
+  "devDependencies": {
+    "@sucrase/jest-plugin": "^2.1.1",
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.24.0",
+    "eslint-plugin-jest": "^24.4.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "jest": "^27.0.6",
+    "nodemon": "^2.0.12",
+    "prettier": "^2.3.2",
+    "sucrase": "^3.20.1",
+    "supertest": "^6.1.4"
+  },
+  "scripts": {
+    "dev": "nodemon src/server.js --ignore ./__tests__",
+    "build": "sucrase ./src -d ./dist --transforms imports",
+    "start": "node -r dotenv/config ./dist/server.js",
+    "pretest": "cross-env NODE_ENV=test sequelize db:migrate",
+    "test": "jest",
+    "posttest": "cross-env NODE_ENV=test sequelize db:migrate:undo:all"
+  }
+}
