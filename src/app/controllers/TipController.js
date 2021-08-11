@@ -40,9 +40,29 @@ class TipController {
 
     async show(req, resp) {
         try {
-            //
+            const id = parseInt(req.params.id, 10);
+
+            const tip = await Tip.findByPk(id);
+
+            if (!tip) {
+                throw Error('Não foi possível buscar a dica pelo ID.');
+            }
+
+            const response = ApiResult.parseResult(
+                true,
+                { tip },
+                'Dica retornada com sucesso.'
+            );
+
+            return resp.status(ApiResult.OK_WITH_CONTENT).json(response);
         } catch (error) {
-            //
+            const response = ApiResult.parseError(
+                false,
+                error.message ? error.message : error,
+                'Não foi possível buscar a dica pelo ID.'
+            );
+
+            return resp.status(ApiResult.NOT_FOUND).json(response);
         }
     }
 
@@ -70,17 +90,59 @@ class TipController {
 
     async update(req, resp) {
         try {
-            //
+            const id = parseInt(req.params.id, 10);
+
+            const updated = await Tip.update(req.body, { where: { id } });
+
+            if (!updated) {
+                throw Error('Não foi possível atualizar a dica.');
+            }
+
+            const response = ApiResult.parseResult(
+                true,
+                'TIP_UPDATED',
+                'Dica atualizada com sucesso.'
+            );
+
+            return resp.status(ApiResult.OK_WITHOUT_CONTENT).json(response);
         } catch (error) {
-            //
+            const response = ApiResult.parseError(
+                false,
+                error.message ? error.message : error,
+                'Não foi possível atualizar a dica.'
+            );
+
+            return resp.status(ApiResult.BAD_REQUEST).json(response);
         }
     }
 
     async delete(req, resp) {
         try {
-            //
+            const id = parseInt(req.params.id, 10);
+
+            const tip = await Tip.findByPk(id);
+
+            if (!tip) {
+                throw Error('Não foi possível buscar a dica pelo ID.');
+            }
+
+            await tip.destroy();
+
+            const response = ApiResult.parseResult(
+                true,
+                'TIP_DELETED',
+                'Dica deletada com sucesso.'
+            );
+
+            return resp.status(ApiResult.OK_WITHOUT_CONTENT).json(response);
         } catch (error) {
-            //
+            const response = ApiResult.parseError(
+                false,
+                error.message ? error.message : error,
+                'Não foi possível deletar a dica pelo ID.'
+            );
+
+            return resp.status(ApiResult.NOT_FOUND).json(response);
         }
     }
 }

@@ -63,7 +63,6 @@ describe('tips', () => {
             expect.assertions(1);
 
             const response = await request(app).get('/tips');
-            console.log('========== response: ', response.body);
 
             expect(response.status).toBe(200);
         });
@@ -99,29 +98,112 @@ describe('tips', () => {
         });
     });
 
-    /* describe('show', () => {
-        it('should get all patient data related to a recommender ID param', async () => {
+    describe('show', () => {
+        it('should get one specific tip by ID param', async () => {
             expect.assertions(1);
 
-            const response = await request(app).get('/recommenders/2');
+            const response = await request(app).get('/tips/1');
 
             expect(response.status).toBe(200);
         });
 
-        it('should not get any patient data related to an invalid recommender ID param', async () => {
+        it('should not get any data related to an invalid ID param', async () => {
             expect.assertions(1);
 
-            const response = await request(app).get('/recommenders/asdsd');
+            const response = await request(app).get('/tips/asdsd');
 
             expect(response.status).toBe(400);
         });
 
-        it('should not get any patient data related to an nonexistent recommender ID param', async () => {
+        it('should not get any data related to an nonexistent ID param', async () => {
             expect.assertions(1);
 
-            const response = await request(app).get('/recommenders/1000');
+            const response = await request(app).get('/tips/1000');
 
             expect(response.status).toBe(400);
         });
-    }); */
+    });
+
+    describe('update', () => {
+        it('should update one specific tip by ID param', async () => {
+            expect.assertions(1);
+
+            const response = await request(app).put('/tips/1').send({
+                subject: 'Novo Assunto 1',
+                text: 'Algo relativo ao novo assunto 1, pois o ideal será esse.',
+            });
+
+            expect(response.status).toBe(204);
+        });
+
+        it('should not update any data related to an invalid ID param', async () => {
+            expect.assertions(1);
+
+            const response = await request(app).put('/tips/asdsd').send({
+                subject: 'Novo Assunto 1',
+                text: 'Algo relativo ao novo assunto 1, pois o ideal será esse.',
+            });
+
+            expect(response.status).toBe(400);
+        });
+
+        it('should not update any data related to an nonexistent ID param', async () => {
+            expect.assertions(1);
+
+            const response = await request(app).put('/tips/1000').send({
+                subject: 'Novo Assunto 1',
+                text: 'Algo relativo ao novo assunto 1, pois o ideal será esse.',
+            });
+
+            expect(response.status).toBe(400);
+        });
+
+        it('should not update a tip with missing params', async () => {
+            expect.assertions(1);
+
+            const response = await request(app).put('/tips/1').send({
+                // subject: '',
+                text: 'Algo relativo ao assunto 1, pois o ideal será esse.',
+            });
+
+            expect(response.status).toBe(400);
+        });
+
+        it('should not update a tip with blank params', async () => {
+            expect.assertions(1);
+
+            const response = await request(app).put('/tips/1').send({
+                subject: ' ',
+                text: 'Algo relativo ao assunto 1, pois o ideal será esse.',
+            });
+
+            expect(response.status).toBe(400);
+        });
+    });
+
+    describe('delete', () => {
+        it('should delete one specific tip by ID param', async () => {
+            expect.assertions(1);
+
+            const response = await request(app).delete('/tips/1');
+
+            expect(response.status).toBe(204);
+        });
+
+        it('should not delete any data related to an invalid ID param', async () => {
+            expect.assertions(1);
+
+            const response = await request(app).delete('/tips/asdsd');
+
+            expect(response.status).toBe(400);
+        });
+
+        it('should not delete any data related to an nonexistent ID param', async () => {
+            expect.assertions(1);
+
+            const response = await request(app).delete('/tips/1000');
+
+            expect(response.status).toBe(400);
+        });
+    });
 });
