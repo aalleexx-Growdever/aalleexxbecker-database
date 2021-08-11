@@ -51,7 +51,7 @@ class Patient extends Model {
     }
 
     static associate(models) {
-        this.hasOne(models.Patient, {
+        this.belongsTo(models.Patient, {
             as: "recommender",
             foreignKey: "recommender_id",
         });
