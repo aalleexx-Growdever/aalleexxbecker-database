@@ -1,4 +1,4 @@
-import Sequelize, { Model } from "sequelize";
+import Sequelize, { Model } from 'sequelize';
 
 class Anamnese extends Model {
     static init(sequelize) {
@@ -14,8 +14,8 @@ class Anamnese extends Model {
                     type: Sequelize.DataTypes.INTEGER,
                     allowNUll: false,
                     references: {
-                        model: "patients",
-                        key: "id",
+                        model: 'patients',
+                        key: 'id',
                     },
                 },
                 smoker: {
@@ -32,7 +32,8 @@ class Anamnese extends Model {
                 },
                 regular_menstrual_cicle: {
                     type: Sequelize.DataTypes.STRING,
-                    allowNUll: false,
+                    allowNUll: true,
+                    defaultValue: null,
                 },
                 diabetes: {
                     type: Sequelize.DataTypes.STRING,
@@ -44,7 +45,8 @@ class Anamnese extends Model {
                 },
                 hormonal_disorder: {
                     type: Sequelize.DataTypes.STRING,
-                    allowNUll: false,
+                    allowNUll: true,
+                    defaultValue: null,
                 },
                 blood_pressure: {
                     type: Sequelize.DataTypes.STRING,
@@ -60,7 +62,8 @@ class Anamnese extends Model {
                 },
                 pregnant: {
                     type: Sequelize.DataTypes.STRING,
-                    allowNUll: false,
+                    allowNUll: true,
+                    defaultValue: null,
                 },
                 medical_treatment: {
                     type: Sequelize.DataTypes.STRING,
@@ -69,6 +72,7 @@ class Anamnese extends Model {
                 treatment_description: {
                     type: Sequelize.DataTypes.TEXT,
                     allowNUll: true,
+                    defaultValue: null,
                 },
                 allergy: {
                     type: Sequelize.DataTypes.STRING,
@@ -77,6 +81,7 @@ class Anamnese extends Model {
                 allergy_description: {
                     type: Sequelize.DataTypes.TEXT,
                     allowNUll: true,
+                    defaultValue: null,
                 },
                 recent_surgery: {
                     type: Sequelize.DataTypes.STRING,
@@ -85,6 +90,7 @@ class Anamnese extends Model {
                 surgery_description: {
                     type: Sequelize.DataTypes.TEXT,
                     allowNUll: true,
+                    defaultValue: null,
                 },
                 tumor_or_cancer: {
                     type: Sequelize.DataTypes.STRING,
@@ -93,6 +99,7 @@ class Anamnese extends Model {
                 tumor_or_cancer_description: {
                     type: Sequelize.DataTypes.TEXT,
                     allowNUll: true,
+                    defaultValue: null,
                 },
                 skin_problems: {
                     type: Sequelize.DataTypes.STRING,
@@ -101,6 +108,7 @@ class Anamnese extends Model {
                 skin_problems_description: {
                     type: Sequelize.DataTypes.TEXT,
                     allowNUll: true,
+                    defaultValue: null,
                 },
                 orthopedic_problems: {
                     type: Sequelize.DataTypes.STRING,
@@ -109,6 +117,7 @@ class Anamnese extends Model {
                 orthopedic_problems_description: {
                     type: Sequelize.DataTypes.TEXT,
                     allowNUll: true,
+                    defaultValue: null,
                 },
                 prosthesis: {
                     type: Sequelize.DataTypes.STRING,
@@ -117,6 +126,7 @@ class Anamnese extends Model {
                 prosthesis_description: {
                     type: Sequelize.DataTypes.TEXT,
                     allowNUll: true,
+                    defaultValue: null,
                 },
                 acute_inflammation: {
                     type: Sequelize.DataTypes.STRING,
@@ -125,6 +135,7 @@ class Anamnese extends Model {
                 inflammation_description: {
                     type: Sequelize.DataTypes.TEXT,
                     allowNUll: true,
+                    defaultValue: null,
                 },
                 necessary_information: {
                     type: Sequelize.DataTypes.STRING,
@@ -133,12 +144,13 @@ class Anamnese extends Model {
                 information_description: {
                     type: Sequelize.DataTypes.TEXT,
                     allowNUll: true,
+                    defaultValue: null,
                 },
             },
             {
                 sequelize,
-                schema: "massotherapy",
-                tableName: "anamneses",
+                schema: 'massotherapy',
+                tableName: 'anamneses',
             }
         );
 
@@ -147,9 +159,21 @@ class Anamnese extends Model {
 
     static associate(models) {
         this.belongsTo(models.Patient, {
-            as: "anamnese",
-            foreignKey: "patient_id",
+            as: 'patient',
+            foreignKey: 'patient_id',
         });
+    }
+
+    static parseConditions(data) {
+        const { name } = data;
+
+        const conditions = {};
+
+        if (name) {
+            conditions.name = name;
+        }
+
+        return { conditions };
     }
 }
 

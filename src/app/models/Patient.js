@@ -1,4 +1,4 @@
-import Sequelize, { Model } from "sequelize";
+import Sequelize, { Model } from 'sequelize';
 
 class Patient extends Model {
     static init(sequelize) {
@@ -35,15 +35,15 @@ class Patient extends Model {
                     allowNull: true,
                     defaultValue: null,
                     references: {
-                        model: "patients",
-                        key: "id",
+                        model: 'patients',
+                        key: 'id',
                     },
                 },
             },
             {
                 sequelize,
-                schema: "massotherapy",
-                tableName: "patients",
+                schema: 'massotherapy',
+                tableName: 'patients',
             }
         );
 
@@ -52,13 +52,13 @@ class Patient extends Model {
 
     static associate(models) {
         this.belongsTo(models.Patient, {
-            as: "recommender",
-            foreignKey: "recommender_id",
+            as: 'recommender',
+            foreignKey: 'recommender_id',
         });
 
         this.hasOne(models.Anamnese, {
-            as: "anamnese",
-            foreignKey: "patient_id",
+            as: 'anamnese',
+            foreignKey: 'patient_id',
         });
     }
 

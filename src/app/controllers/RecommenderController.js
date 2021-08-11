@@ -1,6 +1,6 @@
-import { Op } from "sequelize";
-import Patient from "../models/Patient";
-import ApiResult from "../utils/ApiResult";
+import { Op } from 'sequelize';
+import Patient from '../models/Patient';
+import ApiResult from '../utils/ApiResult';
 
 class RecommenderController {
     async index(req, resp) {
@@ -14,11 +14,11 @@ class RecommenderController {
                 include: [
                     {
                         model: Patient,
-                        as: "recommender",
-                        attributes: ["name"],
+                        as: 'recommender',
+                        attributes: ['name'],
                     },
                 ],
-                order: [["recommender_id", "ASC"]],
+                order: [['recommender_id', 'ASC']],
                 limit,
                 offset: (page - 1) * limit,
             });
@@ -33,7 +33,7 @@ class RecommenderController {
             const response = ApiResult.parseResult(
                 true,
                 { data },
-                "Recomendadores retornados(as) com sucesso."
+                'Recomendadores retornados(as) com sucesso.'
             );
 
             return resp.status(ApiResult.OK_WITH_CONTENT).json(response);
@@ -41,7 +41,7 @@ class RecommenderController {
             const response = ApiResult.parseError(
                 false,
                 error.message ? error.message : error,
-                "Não foram encontrados dados para serem listados."
+                'Não foram encontrados dados para serem listados.'
             );
 
             return resp.status(ApiResult.NOT_FOUND).json(response);
@@ -58,11 +58,11 @@ class RecommenderController {
                 include: [
                     {
                         model: Patient,
-                        as: "recommender",
-                        attributes: ["name"],
+                        as: 'recommender',
+                        attributes: ['name'],
                     },
                 ],
-                order: [["name", "ASC"]],
+                order: [['name', 'ASC']],
                 limit,
                 offset: (page - 1) * limit,
             });
@@ -77,7 +77,7 @@ class RecommenderController {
             const response = ApiResult.parseResult(
                 true,
                 { data },
-                "Dados relacionados com o ID de recomendador(a) retornados com sucesso."
+                'Dados relacionados com o ID de recomendador(a) retornados com sucesso.'
             );
 
             return resp.status(ApiResult.OK_WITH_CONTENT).json(response);
@@ -85,7 +85,7 @@ class RecommenderController {
             const response = ApiResult.parseError(
                 false,
                 error.message ? error.message : error,
-                "Não foi possível buscar o(a) paciente pelo ID."
+                'Não foi possível buscar o(a) paciente pelo ID.'
             );
 
             return resp.status(ApiResult.NOT_FOUND).json(response);

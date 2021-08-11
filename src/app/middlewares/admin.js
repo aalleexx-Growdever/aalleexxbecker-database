@@ -1,31 +1,31 @@
-import Admin from "../models/Admin";
-import ApiResult from "../utils/ApiResult";
+import Admin from '../models/Admin';
+import ApiResult from '../utils/ApiResult';
 
-function validateData(req, resp, next) {
+async function validateData(req, resp, next) {
     const { name, login, password } = req.body;
 
     try {
-        if (typeof name !== "string" || name.length === 0) {
+        if (typeof name !== 'string' || name.length === 0) {
             throw Error(
-                "Não foi possivel validar os dados enviados. Verifique o campo nome."
+                'Não foi possivel validar os dados enviados. Verifique o campo nome.'
             );
         }
-        if (typeof login !== "string" || login.length === 0) {
+        if (typeof login !== 'string' || login.length === 0) {
             throw Error(
-                "Não foi possivel validar os dados enviados. Verifique o campo login."
+                'Não foi possivel validar os dados enviados. Verifique o campo login.'
             );
         }
-        if (typeof password !== "string" || password.length === 0) {
+        if (typeof password !== 'string' || password.length === 0) {
             throw Error(
-                "Não foi possivel validar os dados enviados. Verifique o campo senha."
+                'Não foi possivel validar os dados enviados. Verifique o campo senha.'
             );
         }
     } catch (error) {
         const response = ApiResult.parseError(
             false,
-            "INVALID_ADMIN_DATA_PARAMS",
+            'INVALID_ADMIN_DATA_PARAMS',
             error.message ? error.message : error,
-            "Dados enviados inválidos. Por favor verifique os campos preenchidos."
+            'Dados enviados inválidos. Por favor verifique os campos preenchidos.'
         );
 
         return resp.status(ApiResult.BAD_REQUEST).json(response);
@@ -41,7 +41,7 @@ async function verifyNameParam(req, resp, next) {
         if (name) {
             if (/[0-9]+/.test(name)) {
                 throw Error(
-                    "Não foi possivel validar o parâmetro nome. Por favor verifique se o nome está correto e efetue uma nova pesquisa."
+                    'Não foi possivel validar o parâmetro nome. Por favor verifique se o nome está correto e efetue uma nova pesquisa.'
                 );
             }
 
@@ -51,16 +51,16 @@ async function verifyNameParam(req, resp, next) {
 
             if (!admin) {
                 throw Error(
-                    "Não foi possível encontrar nenhum admin com o nome pesquisado."
+                    'Não foi possível encontrar nenhum admin com o nome pesquisado.'
                 );
             }
         }
     } catch (error) {
         const response = ApiResult.parseError(
             false,
-            "INVALID_NAME_PARAMS",
+            'INVALID_NAME_PARAMS',
             error.message ? error.message : error,
-            "Parâmetro nome inválido. Por favor verifique se o nome está correto.",
+            'Parâmetro nome inválido. Por favor verifique se o nome está correto.',
             Error
         );
 
@@ -76,11 +76,11 @@ async function validateAdminExist(req, resp, next) {
     try {
         if (id.length === 0) {
             throw Error(
-                "Parâmetro ID obrigatório para requisição não informado."
+                'Parâmetro ID obrigatório para requisição não informado.'
             );
         }
         if (!Number.isInteger(id)) {
-            throw Error("Parâmetro ID deve ser um número inteiro.");
+            throw Error('Parâmetro ID deve ser um número inteiro.');
         }
 
         const admin = await Admin.findOne({
@@ -89,13 +89,13 @@ async function validateAdminExist(req, resp, next) {
 
         if (!admin) {
             throw Error(
-                "Não foi possível encontrar o(a) admin com o ID informado."
+                'Não foi possível encontrar o(a) admin com o ID informado.'
             );
         }
     } catch (error) {
         const response = ApiResult.parseError(
             false,
-            "ADMIN_DATA_NOT_FOUND",
+            'ADMIN_DATA_NOT_FOUND',
             error.message ? error.message : error,
             Error
         );
@@ -107,7 +107,7 @@ async function validateAdminExist(req, resp, next) {
 }
 
 async function compareLogins(req, resp, next) {
-    const { id } = req.params;
+    const id = parseInt(req.params.id, 10);
     const { login } = req.body;
 
     try {
@@ -116,7 +116,7 @@ async function compareLogins(req, resp, next) {
 
             if (admin.login === login) {
                 throw Error(
-                    "Nenhum dado relacionado ao parâmetro ID encontrado."
+                    'Nenhum dado relacionado ao parâmetro ID encontrado.'
                 );
             }
         }
@@ -128,14 +128,14 @@ async function compareLogins(req, resp, next) {
 
             if (admin) {
                 throw Error(
-                    "O login informado já existe. Por favor cadastre um login diferente."
+                    'O login informado já existe. Por favor cadastre um login diferente.'
                 );
             }
         }
     } catch (error) {
         const response = ApiResult.parseError(
             false,
-            "ADMIN_DATA_NOT_FOUND",
+            'ADMIN_DATA_NOT_FOUND',
             error.message ? error.message : error,
             Error
         );

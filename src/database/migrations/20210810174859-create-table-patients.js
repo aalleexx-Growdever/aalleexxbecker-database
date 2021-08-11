@@ -1,7 +1,7 @@
 module.exports = {
     up: async (queryInterface, Sequelize) => {
         await queryInterface.createTable(
-            "patients",
+            'patients',
             {
                 id: {
                     type: Sequelize.DataTypes.INTEGER,
@@ -32,9 +32,10 @@ module.exports = {
                 recommender_id: {
                     type: Sequelize.DataTypes.INTEGER,
                     allowNull: true,
+                    defaultValue: null,
                     references: {
-                        model: "patients",
-                        key: "id",
+                        model: 'patients',
+                        key: 'id',
                     },
                 },
                 created_at: {
@@ -47,15 +48,15 @@ module.exports = {
                 },
             },
             {
-                schema: "massotherapy",
+                schema: 'massotherapy',
             }
         );
     },
 
-    down: async (queryInterface) => {
+    down: async queryInterface => {
         await queryInterface.dropTable({
-            tableName: "patients",
-            schema: "massotherapy",
+            tableName: 'patients',
+            schema: 'massotherapy',
         });
     },
 };
