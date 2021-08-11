@@ -5,17 +5,17 @@ async function validateData(req, resp, next) {
     const { name, login, password } = req.body;
 
     try {
-        if (typeof name !== 'string' || name.length === 0) {
+        if (typeof name !== 'string' || name.trim().length === 0) {
             throw Error(
                 'Não foi possivel validar os dados enviados. Verifique o campo nome.'
             );
         }
-        if (typeof login !== 'string' || login.length === 0) {
+        if (typeof login !== 'string' || login.trim().length === 0) {
             throw Error(
                 'Não foi possivel validar os dados enviados. Verifique o campo login.'
             );
         }
-        if (typeof password !== 'string' || password.length === 0) {
+        if (typeof password !== 'string' || password.trim().length === 0) {
             throw Error(
                 'Não foi possivel validar os dados enviados. Verifique o campo senha.'
             );
@@ -39,6 +39,12 @@ async function verifyNameParam(req, resp, next) {
         const { name } = req.query;
 
         if (name) {
+            if (typeof name !== 'string' || name.trim().length === 0) {
+                throw Error(
+                    'Não foi possivel validar os dados enviados. Verifique o campo nome.'
+                );
+            }
+
             if (/[0-9]+/.test(name)) {
                 throw Error(
                     'Não foi possivel validar o parâmetro nome. Por favor verifique se o nome está correto e efetue uma nova pesquisa.'
@@ -114,7 +120,7 @@ async function compareLogins(req, resp, next) {
         if (id) {
             const admin = await Admin.findByPk(id);
 
-            if (admin.login === login) {
+            if (admin.login === login.trim()) {
                 throw Error(
                     'Nenhum dado relacionado ao parâmetro ID encontrado.'
                 );

@@ -6,7 +6,7 @@ async function validateData(req, resp, next) {
     const id = parseInt(req.params.recommenderId, 10);
 
     try {
-        if (typeof name !== 'string' || name.length === 0) {
+        if (typeof name !== 'string' || name.trim().length === 0) {
             throw Error(
                 'Não foi possível validar os dados enviados. Verifique o campo nome.'
             );
@@ -21,23 +21,27 @@ async function validateData(req, resp, next) {
                 'Não foi possível validar os dados enviados. Verifique o campo data de nascimento.'
             );
         }
-        if (typeof contact !== 'string' || contact.length === 0) {
+        if (typeof contact !== 'string' || contact.trim().length === 0) {
             throw Error(
                 'Não foi possível validar os dados enviados. Verifique o campo contato.'
             );
         }
-        if (typeof genre !== 'string' || genre.length === 0) {
+        if (typeof genre !== 'string' || genre.trim().length === 0) {
             throw Error(
                 'Não foi possível validar os dados enviados. Verifique o campo gênero.'
             );
         }
-        if (typeof howMet !== 'string' || howMet.length === 0) {
+        if (typeof howMet !== 'string' || howMet.trim().length === 0) {
             throw Error(
                 'Não foi possível validar os dados enviados. Verifique o campo indicação.'
             );
         }
         if (id) {
-            if (typeof id !== 'number' || id.length === 0) {
+            if (
+                typeof id !== 'number' ||
+                id.length === 0 ||
+                !Number.isInteger(id)
+            ) {
                 throw Error(
                     'Não foi possível validar os dados enviados. Verifique o campo ID de quem indicou.'
                 );
@@ -78,6 +82,12 @@ async function verifyNameParam(req, resp, next) {
         const { name } = req.query;
 
         if (name) {
+            if (typeof name !== 'string' || name.trim().length === 0) {
+                throw Error(
+                    'Não foi possível validar os dados enviados. Verifique o campo nome.'
+                );
+            }
+
             if (/[0-9]+/.test(name)) {
                 throw Error(
                     'Não foi possivel validar o parâmetro nome. Por favor verifique se o nome está correto e efetue uma nova pesquisa.'

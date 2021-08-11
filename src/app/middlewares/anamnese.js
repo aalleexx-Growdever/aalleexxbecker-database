@@ -61,14 +61,14 @@ function validateData(req, resp, next) {
 
     try {
         mandatory.forEach(field => {
-            if (typeof field !== 'string' || field.length === 0) {
+            if (typeof field !== 'string' || field.trim().length === 0) {
                 throw Error(`Verifique o campo "${field}" do formulário.`);
             }
         });
 
         if (patientGenre === 'feminino') {
             womenMandatory.forEach(field => {
-                if (typeof field !== 'string' || field.length === 0) {
+                if (typeof field !== 'string' || field.trim().length === 0) {
                     throw Error(`Verifique o campo "${field}" no formulário.`);
                 }
             });
@@ -77,7 +77,7 @@ function validateData(req, resp, next) {
         if (medicalTreatment === 'sim') {
             if (
                 typeof treatmentDescription !== 'string' ||
-                treatmentDescription.length === 0
+                treatmentDescription.trim().length === 0
             ) {
                 throw Error(
                     'Verifique o campo "descrição do tratamento" no formulário.'
@@ -87,7 +87,7 @@ function validateData(req, resp, next) {
         if (allergy === 'sim') {
             if (
                 typeof allergyDescription !== 'string' ||
-                allergyDescription.length === 0
+                allergyDescription.trim().length === 0
             ) {
                 throw Error(
                     'Verifique o campo "descrição da alergia" no formulário.'
@@ -97,7 +97,7 @@ function validateData(req, resp, next) {
         if (recentSurgery === 'sim') {
             if (
                 typeof surgeryDescription !== 'string' ||
-                surgeryDescription.length === 0
+                surgeryDescription.trim().length === 0
             ) {
                 throw Error(
                     'Verifique o campo "descrição da cirurgia" no formulário.'
@@ -107,7 +107,7 @@ function validateData(req, resp, next) {
         if (tumorOrCancer === 'sim') {
             if (
                 typeof tumorOrCancerDescription !== 'string' ||
-                tumorOrCancerDescription.length === 0
+                tumorOrCancerDescription.trim().length === 0
             ) {
                 throw Error(
                     'Verifique o campo "descrição do tumor/câncer" no formulário.'
@@ -117,7 +117,7 @@ function validateData(req, resp, next) {
         if (skinProblems === 'sim') {
             if (
                 typeof skinProblemsDescription !== 'string' ||
-                skinProblemsDescription.length === 0
+                skinProblemsDescription.trim().length === 0
             ) {
                 throw Error(
                     'Verifique o campo "descrição do problema de pele" no formulário.'
@@ -127,7 +127,7 @@ function validateData(req, resp, next) {
         if (orthopedicProblems === 'sim') {
             if (
                 typeof orthopedicProblemsDescription !== 'string' ||
-                orthopedicProblemsDescription.length === 0
+                orthopedicProblemsDescription.trim().length === 0
             ) {
                 throw Error(
                     'Verifique o campo "descrição do problema ortopédico" no formulário.'
@@ -137,7 +137,7 @@ function validateData(req, resp, next) {
         if (prosthesis === 'sim') {
             if (
                 typeof prosthesisDescription !== 'string' ||
-                prosthesisDescription.length === 0
+                prosthesisDescription.trim().length === 0
             ) {
                 throw Error(
                     'Verifique o campo "descrição da prótese" no formulário.'
@@ -147,7 +147,7 @@ function validateData(req, resp, next) {
         if (acuteInflammation === 'sim') {
             if (
                 typeof inflammationDescription !== 'string' ||
-                inflammationDescription.length === 0
+                inflammationDescription.trim().length === 0
             ) {
                 throw Error(
                     'Verifique o campo "descrição da inflamação" no formulário.'
@@ -157,7 +157,7 @@ function validateData(req, resp, next) {
         if (necessaryInformation === 'sim') {
             if (
                 typeof informationDescription !== 'string' ||
-                informationDescription.length === 0
+                informationDescription.trim().length === 0
             ) {
                 throw Error(
                     'Verifique o campo "descrição da informação adicional" no formulário.'
@@ -182,7 +182,11 @@ async function verifyPatientId(req, resp, next) {
     const id = parseInt(req.body.patientId, 10);
 
     try {
-        if (typeof id !== 'number' || id.length === 0) {
+        if (
+            typeof id !== 'number' ||
+            id.length === 0 ||
+            !Number.isInteger(id)
+        ) {
             throw Error(
                 'Não foi possivel validar os dados enviados. Verifique o campo ID do paciente.'
             );
