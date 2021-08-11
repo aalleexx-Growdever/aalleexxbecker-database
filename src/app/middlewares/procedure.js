@@ -1,19 +1,22 @@
 import ApiResult from '../utils/ApiResult';
-import Tip from '../models/Tip';
+import Procedure from '../models/Procedure';
 
 function validateData(req, resp, next) {
     try {
-        const { subject, text } = req.body;
+        const { name, description } = req.body;
 
-        if (typeof subject !== 'string' || subject.trim().length === 0) {
+        if (typeof name !== 'string' || name.trim().length === 0) {
             throw Error(
-                'Não foi possível validar os dados do campo "assunto" no formulário'
+                'Não foi possível validar os dados do campo "nome" no formulário'
             );
         }
 
-        if (typeof text !== 'string' || text.trim().length === 0) {
+        if (
+            typeof description !== 'string' ||
+            description.trim().length === 0
+        ) {
             throw Error(
-                'Não foi possível validar os dados do campo "texto" no formulário'
+                'Não foi possível validar os dados do campo "descrição" no formulário'
             );
         }
     } catch (error) {
@@ -42,9 +45,9 @@ async function verifyId(req, resp, next) {
             throw Error('Não foi possível validar o ID informado');
         }
 
-        const tip = await Tip.findOne({ where: { id } });
+        const procedure = await Procedure.findOne({ where: { id } });
 
-        if (!tip) {
+        if (!procedure) {
             throw Error('Não foi possível encontrar dados relacionados ao ID');
         }
     } catch (error) {
@@ -61,18 +64,18 @@ async function verifyId(req, resp, next) {
     return next();
 }
 
-async function verifySubjectParam(req, resp, next) {
+async function verifyNameParam(req, resp, next) {
     try {
-        const { subject } = req.query;
+        const { name } = req.query;
 
-        if (subject) {
-            if (typeof subject !== 'string' || subject.trim().length === 0) {
+        if (name) {
+            if (typeof name !== 'string' || name.trim().length === 0) {
                 throw Error('Não foi possível validar o parâmetro de busca.');
             }
 
-            const tip = await Tip.findOne({ where: { subject } });
+            const procedure = await Procedure.findOne({ where: { name } });
 
-            if (!tip) {
+            if (!procedure) {
                 throw Error(
                     'Não foi possível encontrar dados relacionados ao parâmetro de busca.'
                 );
@@ -81,7 +84,7 @@ async function verifySubjectParam(req, resp, next) {
     } catch (error) {
         const response = ApiResult.parseError(
             false,
-            'INVALID_SUBJECT_QUERY_PARAM',
+            'INVALID_NAME_QUERY_PARAM',
             error.message ? error.message : error,
             'O parâmetro de busca informado é inválido.'
         );
@@ -92,4 +95,4 @@ async function verifySubjectParam(req, resp, next) {
     return next();
 }
 
-export { validateData, verifyId, verifySubjectParam };
+export { validateData, verifyId, verifyNameParam };

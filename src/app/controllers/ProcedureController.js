@@ -1,13 +1,13 @@
 import ApiResult from '../utils/ApiResult';
-import Tip from '../models/Tip';
+import Procedure from '../models/Procedure';
 
-class TipController {
+class ProcedureController {
     async index(req, resp) {
         try {
             const { page = 1, limit = 10 } = req.query;
-            const { conditions } = await Tip.parseConditions(req.query);
+            const { conditions } = await Procedure.parseConditions(req.query);
 
-            const { count, rows } = await Tip.findAndCountAll({
+            const { count, rows } = await Procedure.findAndCountAll({
                 where: conditions,
                 limit,
                 offset: (page - 1) * limit,
@@ -17,13 +17,13 @@ class TipController {
                 current_page: parseInt(page, 10),
                 total_pages: Math.ceil(count / limit),
                 total: count,
-                tips: rows,
+                procedures: rows,
             };
 
             const response = ApiResult.parseResult(
                 true,
                 { data },
-                'Dica(s) retornada(s) com sucesso.'
+                'Procedimento(s) retornado(s) com sucesso.'
             );
 
             return resp.status(ApiResult.OK_WITH_CONTENT).json(response);
@@ -42,16 +42,16 @@ class TipController {
         try {
             const id = parseInt(req.params.id, 10);
 
-            const tip = await Tip.findByPk(id);
+            const procedure = await Procedure.findByPk(id);
 
-            if (!tip) {
-                throw Error('Não foi possível buscar a dica pelo ID.');
+            if (!procedure) {
+                throw Error('Não foi possível buscar o procedimento pelo ID.');
             }
 
             const response = ApiResult.parseResult(
                 true,
-                { tip },
-                'Dica retornada com sucesso.'
+                { procedure },
+                'Procedimento retornado com sucesso.'
             );
 
             return resp.status(ApiResult.OK_WITH_CONTENT).json(response);
@@ -59,7 +59,7 @@ class TipController {
             const response = ApiResult.parseError(
                 false,
                 error.message ? error.message : error,
-                'Não foi possível buscar a dica pelo ID.'
+                'Não foi possível buscar o procedimento pelo ID.'
             );
 
             return resp.status(ApiResult.NOT_FOUND).json(response);
@@ -68,12 +68,12 @@ class TipController {
 
     async store(req, resp) {
         try {
-            const tip = await Tip.create(req.body);
+            const procedure = await Procedure.create(req.body);
 
             const response = ApiResult.parseResult(
                 true,
-                { tip },
-                'Dica registrada com sucesso.'
+                { procedure },
+                'Procedimento registrado com sucesso.'
             );
 
             return resp.status(ApiResult.OK_CREATED).json(response);
@@ -81,7 +81,7 @@ class TipController {
             const response = ApiResult.parseError(
                 false,
                 error.message ? error.message : error,
-                'Não foi possível registrar a dica.'
+                'Não foi possível registrar o procedimento.'
             );
 
             return resp.status(ApiResult.BAD_REQUEST).json(response);
@@ -92,16 +92,16 @@ class TipController {
         try {
             const id = parseInt(req.params.id, 10);
 
-            const updated = await Tip.update(req.body, { where: { id } });
+            const updated = await Procedure.update(req.body, { where: { id } });
 
             if (!updated) {
-                throw Error('Não foi possível atualizar a dica.');
+                throw Error('Não foi possível atualizar o procedimento.');
             }
 
             const response = ApiResult.parseResult(
                 true,
-                'TIP_UPDATED',
-                'Dica atualizada com sucesso.'
+                'PROCEDURE_UPDATED',
+                'Procedimento atualizado com sucesso.'
             );
 
             return resp.status(ApiResult.OK_WITHOUT_CONTENT).json(response);
@@ -109,7 +109,7 @@ class TipController {
             const response = ApiResult.parseError(
                 false,
                 error.message ? error.message : error,
-                'Não foi possível atualizar a dica.'
+                'Não foi possível atualizar o procedimento.'
             );
 
             return resp.status(ApiResult.BAD_REQUEST).json(response);
@@ -120,18 +120,18 @@ class TipController {
         try {
             const id = parseInt(req.params.id, 10);
 
-            const tip = await Tip.findByPk(id);
+            const procedure = await Procedure.findByPk(id);
 
-            if (!tip) {
-                throw Error('Não foi possível buscar a dica pelo ID.');
+            if (!procedure) {
+                throw Error('Não foi possível buscar o procedimento pelo ID.');
             }
 
-            await tip.destroy();
+            await procedure.destroy();
 
             const response = ApiResult.parseResult(
                 true,
-                'TIP_DELETED',
-                'Dica deletada com sucesso.'
+                'PROCEDURE_DELETED',
+                'Procedimento deletado com sucesso.'
             );
 
             return resp.status(ApiResult.OK_WITHOUT_CONTENT).json(response);
@@ -139,7 +139,7 @@ class TipController {
             const response = ApiResult.parseError(
                 false,
                 error.message ? error.message : error,
-                'Não foi possível deletar a dica pelo ID.'
+                'Não foi possível deletar o procedimento pelo ID.'
             );
 
             return resp.status(ApiResult.NOT_FOUND).json(response);
@@ -147,4 +147,4 @@ class TipController {
     }
 }
 
-export default new TipController();
+export default new ProcedureController();
